@@ -10,15 +10,13 @@ Window {
     MouseArea{
         id : mouseArea
         anchors.fill: parent
-        property int startX : 0
         property int lastX: 0
-        property int stepX : 50
+        property int stepX : 100
         property int direction: 0
         property int delta: 0
         property bool isUpChanged: false
         property bool isDownChanged: false
         onPressed: {
-            startX = mouse.x
             lastX = mouse.x
             isUpChanged = false
             isDownChanged = false
@@ -41,7 +39,6 @@ Window {
                    if (!isUpChanged)
                    {
                        textCount.count++
-                       lastX = currentX
                        isUpChanged = true
                        isDownChanged = false
                    }
@@ -51,11 +48,11 @@ Window {
                    if (!isDownChanged)
                    {
                        textCount.count--
-                       lastX = currentX
                        isDownChanged = true
                        isUpChanged = false
                    }
                }
+               lastX = currentX
             }
         }
     }
