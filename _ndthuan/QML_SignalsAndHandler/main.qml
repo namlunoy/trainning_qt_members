@@ -22,7 +22,6 @@ Window {
             Connections {
                 target: touchPadMouseA
                 onCounterChanged: {
-                    console.log("user-defined signal handler for property Counter, called from Text component");
                     numText.text = touchPadMouseA.counter.toString()
                 }
             }
@@ -32,31 +31,64 @@ Window {
             id: touchPadMouseA
             anchors.fill: parent
             property int counter: 0
-            property double pX: 0
-            property double pY: 0
-            property double rX: 0
-            property double rY: 0
+            property double startX: 0
+            property double lastCurX: 0
+            property int dir: 0
+            property int curX: 0
+            property bool changedDir: false
+
             onPressed: {
-                pX = mouse.x; pY = mouse.y
+                startX = mouse.x; curX = mouse.x
+                lastCurX = mouse.x; changedDir = true
             }
 
-            onReleased: {
-                rX = mouse.x; rY = mouse.y
-                if (rX > pX + 50)
+            onPositionChanged: {
+                curX = mouse.x
+
+                console.log("start x: " + startX + "    lastCur  x: " + lastCurX   + "    current x: " + curX)
+                // check direction
+                if(curX > lastCurX)
                 {
-                    counter++
-                }
-                else if (rX < pX - 50)
-                {
-                    counter--
+                    if(dir == 1) // previous to right
+                    {
+                        startX = curX
+                        changedDir = true
+                    }
+                    dir = 0
                 }
                 else
                 {
+                    if(dir == 0) // previous to left
+                    {
+                        startX = curX
+                        changedDir = true
+                    }
+                    dir = 1
+                }
 
+                lastCurX = curX
+
+
+                if(curX > startX + 50 && dir == 0)
+                {
+                    if(changedDir)
+                    {
+                        counter++
+                        changedDir = false
+                    }
+                }
+
+                if(curX < startX - 50 && dir == 1)
+                {
+                    if(changedDir)
+                    {
+                        counter--
+                        changedDir = false
+                    }
                 }
             }
+
             onCounterChanged: {
-                console.log("user-defined signal handler for property Counter, called internally");
             }
         }
 
@@ -71,5 +103,4 @@ Window {
         }
 
     }
-
 }
