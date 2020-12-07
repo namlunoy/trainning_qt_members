@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>Menu1.qml</file>
-        <file>Menu2.qml</file>
-    </qresource>
-</RCC>

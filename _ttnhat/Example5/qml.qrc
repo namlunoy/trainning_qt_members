@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>ListComp1.qml</file>
-        <file>ListComp2.qml</file>
-    </qresource>
-</RCC>
