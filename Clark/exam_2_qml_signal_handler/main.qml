@@ -18,6 +18,7 @@ Window {
         property int x_step: 50
 
         signal somethingChanged(int val)
+        signal customSignal(int val)
 
         onPressed: {
             startX = mouseX;
@@ -30,18 +31,27 @@ Window {
 
             if (delta > x_step) {
                 if (startX < endX) {
-                    counter++
+                    counter++;
                 } else {
                     counter--;
                 }
 
                 // emit signal
                 somethingChanged(counter)
+                customSignal(counter)
             }
         }
 
         onCounterChanged: {
             console.log("user-defined signal handler for property Counter, called internally")
+        }
+
+        Component.onCompleted: {
+            customSignal.connect(sendToConsole)
+        }
+
+        function sendToConsole(val) {
+            console.log("custom method connect: " + val)
         }
     }
 
