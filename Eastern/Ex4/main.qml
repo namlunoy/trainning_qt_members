@@ -20,7 +20,7 @@ Window {
 
             width: parent.width / 4
             height: parent.height
-            textButon: "+"
+            textButton: "+"
 
             onClickButton:
             {
@@ -35,7 +35,7 @@ Window {
             width: parent.width / 4
             height: parent.height
             anchors.left: plusButton.right
-            textButon: "-"
+            textButton: "-"
 
             onClickButton:
             {
@@ -49,7 +49,7 @@ Window {
 
             width: parent.width / 4
             height: parent.height
-            textButon: "Reset"
+            textButton: "Reset"
             anchors.left: subButton.right
 
             onClickButton:
@@ -64,7 +64,7 @@ Window {
 
             width: parent.width / 4
             height: parent.height
-            textButon: "Set"
+            textButton: "Set"
             anchors.left: resetButton.right
 
             onClickButton:

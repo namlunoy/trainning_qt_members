@@ -2,12 +2,12 @@ import QtQuick 2.0
 
 Rectangle
 {
-    property string textButon: ""
+    property string textButton: ""
 
     signal clickButton()
 
     Text {
-        text: textButon
+        text: textButton
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         anchors.fill: parent
