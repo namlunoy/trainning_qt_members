@@ -12,8 +12,17 @@ class MyClass : public QObject
 public:
     MyClass(QObject* parent = nullptr);
 
-    void setVal(int val) {m_val = val;}
     int val() {return m_val;}
+    void setVal(int val) {m_val = val;}
+
+Q_SIGNALS:
+    void valChanged();
+
+public slots:
+    void increase();
+    void decrease();
+    void reset();
+    void set();
 
 private:
     int m_val;

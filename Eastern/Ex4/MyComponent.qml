@@ -4,7 +4,7 @@ Rectangle
 {
     property string textButon: ""
 
-    signal handleButton()
+    signal clickButton()
 
     Text {
         text: textButon
@@ -17,5 +17,9 @@ Rectangle
     MouseArea
     {
         anchors.fill: parent
+        onClicked:
+        {
+            clickButton()
+        }
     }
 }

@@ -21,6 +21,11 @@ Window {
             width: parent.width / 4
             height: parent.height
             textButon: "+"
+
+            onClickButton:
+            {
+                MyClass.increase()
+            }
         }
 
         MyComponent
@@ -31,6 +36,11 @@ Window {
             height: parent.height
             anchors.left: plusButton.right
             textButon: "-"
+
+            onClickButton:
+            {
+                MyClass.decrease()
+            }
         }
 
         MyComponent
@@ -41,6 +51,11 @@ Window {
             height: parent.height
             textButon: "Reset"
             anchors.left: subButton.right
+
+            onClickButton:
+            {
+                MyClass.reset()
+            }
         }
 
         MyComponent
@@ -51,6 +66,11 @@ Window {
             height: parent.height
             textButon: "Set"
             anchors.left: resetButton.right
+
+            onClickButton:
+            {
+                MyClass.set()
+            }
         }
     }
 
@@ -67,11 +87,22 @@ Window {
             anchors.centerIn: parent
 
             Text {
+                id: numText
+
                 anchors.fill: parent
                 text: MyClass.val
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: 60
+
+                Connections
+                {
+                    target: MyClass
+                    onValChanged:
+                    {
+                        numText.text = MyClass.val
+                    }
+                }
             }
         }
     }

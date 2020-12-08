@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-//    MyClass myClass;
-//    engine.rootContext()->setContextProperty("MyClass", &myClass);
+    MyClass myClass;
+    engine.rootContext()->setContextProperty("MyClass", &myClass);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
