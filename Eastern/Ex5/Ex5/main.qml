@@ -34,7 +34,7 @@ Window {
         }
     }
 
-    Loader {   
+    Loader {
         id: loader
 
         width: window.width

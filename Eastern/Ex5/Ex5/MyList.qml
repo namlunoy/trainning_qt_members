@@ -5,7 +5,7 @@ Item {
 
     signal switchPage()
 
-    property variant menuName: []
+    property var menuName: []
     property int switchIdx: -1
     property string colorChange: ""
 
