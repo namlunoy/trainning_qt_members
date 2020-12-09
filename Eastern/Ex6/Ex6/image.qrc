@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="btn_nor">image/btn_normal.png</file>
+        <file alias="btn_prs">image/btn_pressed.png</file>
+        <file alias="btn_sel">image/btn_selected.png</file>
+    </qresource>
+</RCC>
