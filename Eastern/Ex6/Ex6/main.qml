@@ -93,7 +93,7 @@ Window {
     Timer {
         id: timer
 
-        running: true
+        running: false
         interval: 1000
         onTriggered: {
             item.state = "Select"
