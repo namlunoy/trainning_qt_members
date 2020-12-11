@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
     MyCharacter myChar;
     myChar.declareQML();
     engine.rootContext()->setContextProperty("MyCharacter", &myChar);
-//    StyleClass::declareQML();
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
