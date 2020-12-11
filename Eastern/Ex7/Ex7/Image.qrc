@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="img_eren">image/eren.jpg</file>
+        <file alias="img_luffy">image/luffy.jpg</file>
+        <file alias="img_naruto">image/naruto.jpg</file>
+        <file alias="img_saitama">image/saitama.jpeg</file>
+        <file alias="img_songoku">image/songoku.jpg</file>
+    </qresource>
+</RCC>
