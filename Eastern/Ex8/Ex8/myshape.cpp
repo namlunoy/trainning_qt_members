@@ -1,6 +1,5 @@
 #include "myshape.h"
 
-
 MyShapee::MyShapee(QObject *parent) :
     QObject(parent)
 {
@@ -20,7 +19,8 @@ void MyShapee::addShape(MyShapee::eType type, int number, QString color)
     m_number = number;
     m_color = color;
 
-    QMetaObject::invokeMethod(m_rootObj, "insertToGrid",
+    if (m_rootObj)
+        QMetaObject::invokeMethod(m_rootObj, "insertToGrid",
                               Q_ARG(QVariant, m_type),
                               Q_ARG(QVariant, m_number),
                               Q_ARG(QVariant, m_color));
