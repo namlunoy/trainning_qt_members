@@ -85,8 +85,9 @@ Item
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         text: itemShape.shapeNumber.toString()
-        font.pixelSize: 50
+        font.pixelSize: shapeNumText.height * 3/7
         horizontalAlignment: Text.AlignHCenter
+        font.bold: true
     }
 
     onShapeTypeChanged: {
