@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Box.qml</file>
+        <file>Circle.qml</file>
+        <file>Triangle.qml</file>
+        <file>ShapeSelect.qml</file>
+        <file>Utils.js</file>
+    </qresource>
+</RCC>
