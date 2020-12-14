@@ -11,6 +11,7 @@ Window {
 
     function insertToGrid(shapeType, shapeNumber, shapeColor) {
         listModelGrid.append({"type" : shapeType, "number" : shapeNumber, "color" : shapeColor.toString()})
+        gridView.positionViewAtEnd();
     }
 
     Item {
@@ -70,6 +71,11 @@ Window {
                 add: Transition {
                     NumberAnimation { properties: "x,y"; from: 100; duration: 1000 }
                 }
+                remove: Transition {
+                    NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 1000 }
+                    NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: 1000 }
+                }
+
             }
         }
 
@@ -106,7 +112,7 @@ Window {
 
 
 
-            MyButton {
+            Button {
                 id: buttonGen
 
                 property int count: 0
@@ -114,9 +120,9 @@ Window {
                 width: parent.width
                 height: parent.height / 10
                 y: myShape.y + myShape.height + 10
-                buttonText: "GENERATE"
+                text: "GENERATE"
 
-                onClickButton: {
+                onClicked: {
                     timer.start()
                 }
 
@@ -130,9 +136,11 @@ Window {
                         if (buttonGen.count < 10) {
                             buttonGen.count++
                             timer.start()
+                            buttonGen.enabled = false
                         }
                         else {
                             buttonGen.count = 0
+                            buttonGen.enabled = true
                         }
                     }
                 }
@@ -163,6 +171,21 @@ Window {
 
                 onClickButton: {
                     insertToGrid(myShape.shapeType, myShape.shapeNumber, myShape.shapeColor)
+                }
+            }
+
+            MyButton {
+                id: buttonClear
+
+                property int count: 0
+
+                width: parent.width
+                height: parent.height / 10
+                y: buttonQml.y + buttonQml.height + 10
+                buttonText: "CLEAR"
+
+                onClickButton: {
+                    listModelGrid.clear()
                 }
             }
         }
