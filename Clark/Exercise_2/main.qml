@@ -41,7 +41,7 @@ Window {
                 spacing: 0
 
                 add: Transition {
-                    NumberAnimation { properties: "x"; from: 0; duration: 500 }
+                    NumberAnimation { properties: "x, y"; from: 0; duration: 500 }
                 }
             }
         }
