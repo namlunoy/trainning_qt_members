@@ -1,0 +1,24 @@
+*Name: Hoang Van Cong
+*Age: 28
+*Role: Developer
+
+*Name: Hoang Bao Trong
+*Age: 29
+*Role: Tester
+
+*Name: Dong
+*Age: 25
+*Role: BA
+
+*Name: Cong
+*Age: 44
+*Role: Tester
+
+*Name: EASTERN
+*Age: 25
+*Role: Team Leader
+
+*Name: Clark Chinh
+*Age: 26
+*Role: Developer
+
