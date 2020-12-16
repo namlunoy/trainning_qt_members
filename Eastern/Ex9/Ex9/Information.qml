@@ -16,7 +16,6 @@ Item {
         memberAge = age
         roleIndex = role
         loader.sourceComponent = inforComponent
-        console.log(roleIndex)
     }
 
     Text {
