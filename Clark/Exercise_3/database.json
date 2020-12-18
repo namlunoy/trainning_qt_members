@@ -1,0 +1,24 @@
+{
+    "members": [
+        {
+            "age": 29,
+            "name": "Hoàng Văn Công",
+            "role": "BA"
+        },
+        {
+            "age": 27,
+            "name": "Nghiêm Xuân Chính",
+            "role": "Developer"
+        },
+        {
+            "age": 30,
+            "name": "Vũ Quang Trọng",
+            "role": "Team Leader"
+        },
+        {
+            "age": 31,
+            "name": "Lê Hồng Nhung",
+            "role": "Tester"
+        }
+    ]
+}
