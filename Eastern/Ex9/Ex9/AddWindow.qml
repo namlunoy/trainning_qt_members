@@ -24,7 +24,7 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
         }
 
-        TextInput {
+        TextField {
             id: nameValue
 
             height: parent.height *1/4
@@ -33,7 +33,7 @@ ApplicationWindow {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             anchors.left: nameText.right
-            text: "name"
+            placeholderText: "Insert name"
         }
 
         Text {
@@ -48,7 +48,7 @@ ApplicationWindow {
             anchors.top: nameText.bottom
         }
 
-        TextInput {
+        TextField {
             id: ageValue
 
             height: parent.height *1/4
@@ -58,7 +58,8 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
             anchors.top: nameText.bottom
             anchors.left: ageText.right
-            text: "0"
+            placeholderText: "Insert age"
+            validator: IntValidator {bottom: 0; top: 100}
         }
 
         Text {

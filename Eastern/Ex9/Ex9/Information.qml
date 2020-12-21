@@ -63,7 +63,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
 
-            TextInput {
+            TextField {
                 id: nameValue
 
                 height: parent.height *1/4
@@ -73,6 +73,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 anchors.left: nameText.right
                 text: memberName
+                placeholderText: "Insert name"
             }
 
             Text {
@@ -87,7 +88,7 @@ Item {
                 anchors.top: nameText.bottom
             }
 
-            TextInput {
+            TextField {
                 id: ageValue
 
                 height: parent.height *1/4
@@ -98,6 +99,8 @@ Item {
                 anchors.top: nameText.bottom
                 anchors.left: ageText.right
                 text: memberAge
+                placeholderText: "Insert age"
+                validator: IntValidator {bottom: 0; top: 100}
             }
 
             Text {
