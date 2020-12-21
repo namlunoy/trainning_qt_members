@@ -66,23 +66,6 @@ ApplicationWindow {
                     infors.memberAge = age;
                     infors.memberName = name;
                     infors.memberRole = role;
-//                    switch(role) {
-//                    case "Team Leader":
-//                        infors.memberRole = 0;
-//                        break;
-//                    case "Developer":
-//                        infors.memberRole = 1;
-//                        break;
-//                    case "BA":
-//                        infors.memberRole = 2;
-//                        break;
-//                    case "Tester":
-//                        infors.memberRole = 3;
-//                        break;
-//                    default:
-//                        infors.memberRole = 0;
-//                        break;
-//                    }
                 }
             }
         }

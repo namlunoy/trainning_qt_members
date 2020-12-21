@@ -130,7 +130,9 @@ Rectangle {
             id: delBtn
             text: "DELETE"
             anchors.right: parent.right
-            onClicked: memberList.removeCompletedItems(idx)
+            onClicked: {
+                memberList.removeCompletedItems(idx)
+            }
         }
 
         Button {

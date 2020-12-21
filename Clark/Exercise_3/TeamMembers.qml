@@ -21,8 +21,12 @@ Rectangle {
 
         ListView {
             id: membersView
+            clip: true
+
             model: MemberModel {
+                id: memModel
                 members: memberList
+
             }
             delegate: memberDelegate
             anchors.fill: parent
@@ -78,6 +82,19 @@ Rectangle {
                         bg.opacity = 0.5
                     else
                         bg.opacity = 0.0
+                }
+
+                ListView.onAdd: {
+                    membersView.currentIndex = index;
+                    membersView.positionViewAtIndex(membersView.count, ListView.Beginning);
+                    selectMember(membersView.currentIndex, model.name, model.role, model.age);
+                }
+
+                ListView.onRemove: {
+                    if (membersView.currentIndex >= membersView.count) {
+                        membersView.currentIndex = membersView.count - 1;
+                        selectMember(membersView.currentIndex, model.name, model.role, model.age);
+                    }
                 }
             }
         }
