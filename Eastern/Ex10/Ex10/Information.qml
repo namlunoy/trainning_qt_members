@@ -9,12 +9,12 @@ Item {
     property int roleIndex: -1
 
     signal deleteMember()
-    signal updateMember(string name, int age, int role)
+    signal updateMember(string name, int age, string role)
 
     function loadInfo(name, age, role) {
         memberName = name
         memberAge = age
-        roleIndex = role
+        roleIndex = MyJS.getIndexFromRole(role)
         loader.sourceComponent = inforComponent
     }
 
@@ -159,7 +159,7 @@ Item {
                     anchors.centerIn: parent
                     text: "UPDATE"
                     onClicked: {
-                        updateMember(nameValue.text, ageValue.text, comboBox.currentIndex)
+                        updateMember(nameValue.text, ageValue.text, comboBox.currentText)
                     }
                 }
             }

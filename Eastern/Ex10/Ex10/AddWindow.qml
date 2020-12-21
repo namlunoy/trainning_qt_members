@@ -6,6 +6,8 @@ import "MyColor.js" as MyJS
 ApplicationWindow {
     id: addWindow
 
+    signal addMember(string name, int age, string role)
+
     visible: true
     width: 300
     height: 300
@@ -24,7 +26,7 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
         }
 
-        TextField {
+        TextField  {
             id: nameValue
 
             height: parent.height *1/4
@@ -48,7 +50,7 @@ ApplicationWindow {
             anchors.top: nameText.bottom
         }
 
-        TextField {
+        TextField  {
             id: ageValue
 
             height: parent.height *1/4
@@ -113,13 +115,14 @@ ApplicationWindow {
             anchors.top: comboBox.bottom
 
             Button {
+                id: addButton
+
                 height: parent.height *3/4
                 width: parent.width *3/8
                 anchors.centerIn: parent
                 text: "ADD"
                 onClicked: {
-                    MyMemberList.addMember(nameValue.text, ageValue.text, comboBox.currentIndex)
-                    addWindow.close()
+                    addMember(nameValue.text, ageValue.text, comboBox.currentText)
                 }
             }
         }
