@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
+
 import MemberList 1.0
 
 import "Utils.js" as Utils
@@ -78,6 +79,15 @@ Rectangle {
                     "BA",
                     "Tester"
                 ]
+
+                delegate: ItemDelegate {
+                    text: modelData
+                    width: parent.width
+                    background: Rectangle {
+                        color: Utils.getRoleColor(modelData)
+                    }
+                }
+
                 background: Rectangle
                 {
                     width: 140
