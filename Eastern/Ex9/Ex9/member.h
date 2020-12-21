@@ -38,7 +38,6 @@ private:
 class MemberList: public QObject
 {
     Q_OBJECT
-    Q_ENUMS(eRole)
 
 public:
     MemberList(QObject* parent = nullptr);
