@@ -2,19 +2,21 @@
 #define MEMBERMODEL_H
 
 #include <QAbstractListModel>
+#include <QVector>
 
-#include "memberlist.h"
+#include "member.h"
+#include "memberdatabase.h"
 
 class MemberModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(MemberList *members READ members WRITE setMembers)
+    Q_PROPERTY(QVector<Member*> members READ members WRITE setMembers NOTIFY membersChanged)
 
 public:
     explicit MemberModel(QObject *parent = nullptr);
 
     enum {
-        ROLE = Qt::UserRole,
+        ROLE = Qt::UserRole + 1,
         NAME,
         AGE
     };
@@ -32,11 +34,32 @@ public:
 
     virtual QHash<int, QByteArray> roleNames() const override;
 
-    MemberList *members() const;
-    void setMembers(MemberList *members);
+    QVector<Member*> members() const;
+
+    Member *get();
+
+public slots:
+    void setMembers(QVector<Member*> members);
+
+signals:
+    void membersChanged(QVector<Member*> members);
 
 private:
-    MemberList *m_members;
+    QVector<Member*> m_members;
+    Member *m_member;
+    MemberDatabase *m_db;
+    int m_index;
+
+    void copyMember(Member *dst, Member* src);
+    void sortMemberByRole();
+
+public:
+    Q_INVOKABLE void append();
+    Q_INVOKABLE void remove();
+    Q_INVOKABLE void edit();
+    Q_INVOKABLE void select(int index);
 };
+
+
 
 #endif // MEMBERMODEL_H

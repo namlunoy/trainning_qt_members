@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import MemberModel 1.0
+import QtQuick.Controls 2.12
 import "Utils.js" as Utils
 
 Rectangle {
@@ -10,9 +10,6 @@ Rectangle {
     border.color: "lightgrey"
     border.width: 1
     anchors.horizontalCenter: parent.horizontalCenter
-
-    signal selectMember(int idx, string name, string role, int age);
-
     Rectangle {
         id: teamMembers
         width: parent.width - 20
@@ -23,13 +20,16 @@ Rectangle {
             id: membersView
             clip: true
 
-            model: MemberModel {
-                id: memModel
-                members: memberList
-
-            }
+            model: myListModel
             delegate: memberDelegate
             anchors.fill: parent
+        }
+
+        Button {
+            onClicked: {
+                console.log("forcelayout");
+                membersView.forceLayout();
+            }
         }
 
         Component {
@@ -49,7 +49,7 @@ Rectangle {
                     width: parent.height
                     height: parent.height
                     color: {
-                        Utils.getRoleColor(model.role)
+                        Utils.getRoleColor(role)
                     }
                     border.color: "black"
                     border.width: 1
@@ -59,21 +59,21 @@ Rectangle {
                     x: parent.height + 10
                     anchors.verticalCenter: parent.verticalCenter
                     font.pointSize: 15
-                    text: model.name
+                    text: name
                 }
 
                 Text {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     font.pointSize: 15
-                    text: model.age
+                    text: age
                 }
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         membersView.currentIndex = index;
-                        selectMember(index, model.name, model.role, model.age);
+                        myListModel.select(index);
                     }
                 }
 
@@ -87,13 +87,13 @@ Rectangle {
                 ListView.onAdd: {
                     membersView.currentIndex = index;
                     membersView.positionViewAtIndex(membersView.count, ListView.Beginning);
-                    selectMember(membersView.currentIndex, model.name, model.role, model.age);
+                    myListModel.select(membersView.currentIndex);
                 }
 
                 ListView.onRemove: {
                     if (membersView.currentIndex >= membersView.count) {
                         membersView.currentIndex = membersView.count - 1;
-                        selectMember(membersView.currentIndex, model.name, model.role, model.age);
+                        myListModel.select(membersView.currentIndex);
                     }
                 }
             }

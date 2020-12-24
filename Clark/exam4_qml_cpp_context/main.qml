@@ -18,7 +18,7 @@ Window {
         }
     }
 
-    TextInput {
+    TextField {
         id: txtInput
         text: "write to here"
         anchors.centerIn: parent

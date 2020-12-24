@@ -1,8 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 
-import MemberList 1.0
-
 import "Utils.js" as Utils
 
 Rectangle {
@@ -17,7 +15,7 @@ Rectangle {
     property int memberAge: 99
     property int memberRole: 0
     property int idx: 0
-    property bool isAdd: false;
+    property bool isAdd: false
 
     Rectangle {
         id: infor
@@ -44,7 +42,7 @@ Rectangle {
             TextField {
                 width: 140
                 height: 40
-                text: rootInfor.memberName;
+                text: myMember.name;
                 anchors.leftMargin: 0
                 anchors.left: parent.left
                 placeholderText: "Enter name"
@@ -58,7 +56,7 @@ Rectangle {
                 width: 140
                 height: 40
                 y: 55;
-                text: rootInfor.memberAge.toString();
+                text: myMember.age.toString();
                 anchors.left: parent.left
                 placeholderText: "Enter age"
                 font.pixelSize: 12
@@ -105,7 +103,7 @@ Rectangle {
 
                 font.pixelSize: 12
                 font.bold: true
-                currentIndex: rootInfor.memberRole
+                currentIndex: myMember.role
             }
         }
     }
@@ -122,7 +120,10 @@ Rectangle {
             anchors.left: parent.left
 
             onClicked: {
-                memberList.setItemAt(idx, rootInfor.memberName, rootInfor.memberRole, rootInfor.memberAge);
+                myMember.name = rootInfor.memberName;
+                myMember.role = rootInfor.memberRole;
+                myMember.age = rootInfor.memberAge;
+                myListModel.edit();
             }
         }
 
@@ -131,7 +132,7 @@ Rectangle {
             text: "DELETE"
             anchors.right: parent.right
             onClicked: {
-                memberList.removeCompletedItems(idx)
+                myListModel.remove();
             }
         }
 
@@ -140,7 +141,10 @@ Rectangle {
             text: "ADD"
             anchors.horizontalCenter: parent.horizontalCenter;
             onClicked: {
-                memberList.appendItem(rootInfor.memberName, rootInfor.memberRole, rootInfor.memberAge);
+                myMember.name = rootInfor.memberName;
+                myMember.role = rootInfor.memberRole;
+                myMember.age = rootInfor.memberAge;
+                myListModel.append();
             }
         }
 

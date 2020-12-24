@@ -1,36 +1,49 @@
 #include "membermodel.h"
+#include "memberdatabase.h"
+
+#include <QDebug>
 
 MemberModel::MemberModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    m_members = new MemberList();
+    m_db = new MemberDatabase();
+    m_db->loadDatabase(m_members);
+
+    if (m_members.isEmpty()) {
+        qDebug() << "init failed";
+    }
+
+    sortMemberByRole();
+    m_member = new Member();
+    copyMember(m_member, m_members.at(0));
 }
 
 int MemberModel::rowCount(const QModelIndex &parent) const
 {
     // For list models only the root node (an invalid parent) should return the list's size. For all
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid() || !m_members)
+    if (parent.isValid() || m_members.isEmpty()) {
+        qDebug() << "parent is invalid";
         return 0;
-
+    }
     // FIXME: Implement me!
-    return m_members->members().size();
+    return m_members.size();
 }
 
 QVariant MemberModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || !m_members)
+    if (!index.isValid() || m_members.isEmpty())
         return QVariant();
 
-    const Member member = m_members->members().at(index.row());
+    const Member *member = m_members.at(index.row());
 
     switch (role) {
     case ROLE:
-        return QVariant(member.role);
+        return QVariant(member->role());
     case NAME:
-        return QVariant(member.name);
+        return QVariant(member->name());
     case AGE:
-        return QVariant(member.age);
+        return QVariant(member->age());
     default:
         break;
     }
@@ -39,18 +52,18 @@ QVariant MemberModel::data(const QModelIndex &index, int role) const
 
 bool MemberModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (!m_members)
+    if (!m_members.isEmpty())
         return false;
-    Member member = m_members->members().at(index.row());
+    Member *member = m_members.at(index.row());
     switch (role) {
     case ROLE:
-        member.role = value.toInt();
+        member->setRole(value.toInt());
         break;
     case NAME:
-        member.name = value.toString();
+        member->setName(value.toString());
         break;
     case AGE:
-        member.age = value.toInt();
+        member->setAge(value.toInt());
         break;
     default:
         break;
@@ -81,37 +94,99 @@ QHash<int, QByteArray> MemberModel::roleNames() const
     return attributes;
 }
 
-MemberList *MemberModel::members() const
+QVector<Member *> MemberModel::members() const
 {
     return m_members;
 }
 
-void MemberModel::setMembers(MemberList *member)
+void MemberModel::setMembers(QVector<Member *> members)
+{
+    if (m_members == members)
+        return;
+
+    m_members = members;
+    emit membersChanged(m_members);
+}
+
+void MemberModel::copyMember(Member *dst, Member *src)
+{
+    dst->setName(src->name());
+    dst->setRole(src->role());
+    dst->setAge(src->age());
+}
+
+void MemberModel::append()
 {
     beginResetModel();
 
-    if (m_members)
-        m_members->disconnect(this);
+    int i = m_members.size();
+    beginInsertRows(QModelIndex(), i, i);
 
-    m_members = member;
+    Member *newMember = new Member();
+    copyMember(newMember, m_member);
+    m_members.append(newMember);
+    m_db->updateDatabase(m_members, m_members.size() - 1, APPEND);
+    endInsertRows();
 
-    if (m_members)
+    sortMemberByRole();
+}
+
+void MemberModel::remove()
+{
+    if (m_index < 0 || m_index >= m_members.size())
     {
-        connect(m_members, &MemberList::preItemAppended, this, [=]() {
-            const int index = m_members->members().size();
-            beginInsertRows(QModelIndex(), index, index);
-        });
-        connect(m_members, &MemberList::postItemAppended, this, [=]() {
-            endInsertRows();
-        });
-        connect(m_members, &MemberList::preItemRemoved, this, [=](int index) {
-            beginRemoveRows(QModelIndex(), index, index);
-        });
-        connect(m_members, &MemberList::postItemRemoved, this, [=]() {
-            endRemoveRows();
-        });
-        connect(m_members, &MemberList::itemUpdated, this, [=](int index) {
-            dataChanged(createIndex(index, 0), createIndex(index, 0));
-        });
+        return;
     }
+
+    beginRemoveRows(QModelIndex(), m_index, m_index);
+    m_db->updateDatabase(m_members, m_index, REMOVE);
+    m_members.removeAt(m_index);
+
+    endRemoveRows();
+}
+
+void MemberModel::edit()
+{
+    if (m_index < 0 || m_index >= m_members.size())
+    {
+        return;
+    }
+
+    Member *oldMember = m_members.at(m_index);
+    if (m_member->name() == oldMember->name() && m_member->role() == oldMember->role()
+            && m_member->age() == oldMember->age())
+    {
+        return;
+    }
+    Member *newMember = new Member();
+    copyMember(newMember, m_member);
+    m_members.replace(m_index, newMember);
+    m_db->updateDatabase(m_members, m_index, REPLACE);
+
+    dataChanged(createIndex(m_index, 0), createIndex(m_index, 0));
+}
+
+void MemberModel::select(int index)
+{
+    if (index < 0 || index >= m_members.size())
+    {
+        return;
+    }
+
+    m_index = index;
+
+    copyMember(m_member, m_members.at(index));
+}
+
+Member* MemberModel::get()
+{
+    return m_member;
+}
+
+void MemberModel::sortMemberByRole()
+{
+    std::sort(m_members.begin(), m_members.end(), [](const Member *a, const Member *b)
+    {
+        return a->role() < b->role();
+    });
 }

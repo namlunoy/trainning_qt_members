@@ -2,8 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "memberlist.h"
 #include "membermodel.h"
+#include "member.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,13 +19,11 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    qmlRegisterType<MemberModel>("MemberModel", 1, 0, "MemberModel");
-    qmlRegisterUncreatableType<MemberList>("MemberList", 1, 0, "MemberList",
-        QStringLiteral("MemberList should not be created in QML"));
+    MemberModel myListModel;
+    Member *myMember = myListModel.get();
 
-    MemberList memberList;
-
-    engine.rootContext()->setContextProperty(QStringLiteral("memberList"), &memberList);
+    engine.rootContext()->setContextProperty(QStringLiteral("myListModel"), &myListModel);
+    engine.rootContext()->setContextProperty(QStringLiteral("myMember"), myMember);
     engine.load(url);
 
     if (engine.rootObjects().isEmpty())

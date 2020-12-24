@@ -61,12 +61,6 @@ ApplicationWindow {
 
             TeamMembers {
                 id: members
-                onSelectMember: {
-                    infors.idx = idx;
-                    infors.memberAge = age;
-                    infors.memberName = name;
-                    infors.memberRole = role;
-                }
             }
         }
 
