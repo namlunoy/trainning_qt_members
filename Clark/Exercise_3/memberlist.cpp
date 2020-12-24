@@ -216,3 +216,4 @@ MemberList::removeCompletedItems(int index)
 
     emit postItemRemoved();
 }
+
