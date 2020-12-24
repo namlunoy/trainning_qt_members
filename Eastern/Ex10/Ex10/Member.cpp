@@ -1,4 +1,4 @@
-#include "member.h"
+#include "Member.h"
 
 Member::Member(QObject *parent) :
     QObject(parent)

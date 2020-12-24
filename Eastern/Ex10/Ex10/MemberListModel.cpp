@@ -146,9 +146,9 @@ void MemberListModel::deleteMember(int index)
     qDebug() << index;
 
     beginRemoveRows(QModelIndex(), index, index);
-    m_memList.removeAt(index);
     endRemoveRows();
 
+    m_memList.removeAt(index);
     reWriteData();
 }
 

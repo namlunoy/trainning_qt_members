@@ -1,7 +1,7 @@
 #ifndef MEMBERLISTMODEL_H
 #define MEMBERLISTMODEL_H
 
-#include "member.h"
+#include "Member.h"
 #include <QDir>
 #include <QtAlgorithms>
 
