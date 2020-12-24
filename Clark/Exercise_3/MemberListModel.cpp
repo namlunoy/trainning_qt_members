@@ -1,9 +1,9 @@
-#include "membermodel.h"
-#include "memberdatabase.h"
+#include "MemberListModel.h"
+#include "MemberDatabase.h"
 
 #include <QDebug>
 
-MemberModel::MemberModel(QObject *parent)
+MemberListModel::MemberListModel(QObject *parent)
     : QAbstractListModel(parent),
       m_index(0)
 {
@@ -19,7 +19,7 @@ MemberModel::MemberModel(QObject *parent)
     }
 }
 
-int MemberModel::rowCount(const QModelIndex &parent) const
+int MemberListModel::rowCount(const QModelIndex &parent) const
 {
     // For list models only the root node (an invalid parent) should return the list's size. For all
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
@@ -31,7 +31,7 @@ int MemberModel::rowCount(const QModelIndex &parent) const
     return m_members.size();
 }
 
-QVariant MemberModel::data(const QModelIndex &index, int role) const
+QVariant MemberListModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || m_members.isEmpty())
         return QVariant();
@@ -51,7 +51,7 @@ QVariant MemberModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-bool MemberModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool MemberListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!m_members.isEmpty())
         return false;
@@ -78,7 +78,7 @@ bool MemberModel::setData(const QModelIndex &index, const QVariant &value, int r
     return false;
 }
 
-Qt::ItemFlags MemberModel::flags(const QModelIndex &index) const
+Qt::ItemFlags MemberListModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
         return Qt::NoItemFlags;
@@ -86,7 +86,7 @@ Qt::ItemFlags MemberModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEditable; // FIXME: Implement me!
 }
 
-QHash<int, QByteArray> MemberModel::roleNames() const
+QHash<int, QByteArray> MemberListModel::roleNames() const
 {
     QHash<int, QByteArray> attributes;
     attributes[ROLE] = "role";
@@ -95,12 +95,12 @@ QHash<int, QByteArray> MemberModel::roleNames() const
     return attributes;
 }
 
-QVector<Member *> MemberModel::members() const
+QVector<Member *> MemberListModel::members() const
 {
     return m_members;
 }
 
-void MemberModel::setMembers(QVector<Member *> members)
+void MemberListModel::setMembers(QVector<Member *> members)
 {
     if (m_members == members)
         return;
@@ -109,14 +109,14 @@ void MemberModel::setMembers(QVector<Member *> members)
     emit membersChanged(m_members);
 }
 
-void MemberModel::copyMember(Member *dst, Member *src)
+void MemberListModel::copyMember(Member *dst, Member *src)
 {
     dst->setName(src->name());
     dst->setRole(src->role());
     dst->setAge(src->age());
 }
 
-void MemberModel::append()
+void MemberListModel::append()
 {
     // Reset the model so the model can update when newly member is added
     beginResetModel();
@@ -136,7 +136,7 @@ void MemberModel::append()
     endResetModel();
 }
 
-void MemberModel::remove()
+void MemberListModel::remove()
 {
     if (m_index < 0 || m_index >= m_members.size())
     {
@@ -150,7 +150,7 @@ void MemberModel::remove()
     endRemoveRows();
 }
 
-void MemberModel::edit()
+void MemberListModel::edit()
 {
     if (m_index < 0 || m_index >= m_members.size())
     {
@@ -171,7 +171,7 @@ void MemberModel::edit()
     dataChanged(createIndex(m_index, 0), createIndex(m_index, 0));
 }
 
-void MemberModel::select(int index)
+void MemberListModel::select(int index)
 {
     if (index < 0 || index >= m_members.size())
     {
@@ -183,12 +183,12 @@ void MemberModel::select(int index)
     copyMember(m_member, m_members.at(index));
 }
 
-Member* MemberModel::get()
+Member* MemberListModel::get()
 {
     return m_member;
 }
 
-void MemberModel::sortMemberByRole()
+void MemberListModel::sortMemberByRole()
 {
     std::sort(m_members.begin(), m_members.end(), [](const Member *a, const Member *b)
     {

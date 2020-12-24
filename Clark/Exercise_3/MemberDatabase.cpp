@@ -1,4 +1,4 @@
-#include "memberdatabase.h"
+#include "MemberDatabase.h"
 
 #include <QFile>
 #include <QJsonArray>

@@ -2,8 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "membermodel.h"
-#include "member.h"
+#include "MemberListModel.h"
+#include "Member.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    MemberModel myListModel;
+    MemberListModel myListModel;
     Member *myMember = myListModel.get();
 
     engine.rootContext()->setContextProperty(QStringLiteral("myListModel"), &myListModel);

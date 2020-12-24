@@ -4,16 +4,16 @@
 #include <QAbstractListModel>
 #include <QVector>
 
-#include "member.h"
-#include "memberdatabase.h"
+#include "Member.h"
+#include "MemberDatabase.h"
 
-class MemberModel : public QAbstractListModel
+class MemberListModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QVector<Member*> members READ members WRITE setMembers NOTIFY membersChanged)
 
 public:
-    explicit MemberModel(QObject *parent = nullptr);
+    explicit MemberListModel(QObject *parent = nullptr);
 
     enum {
         ROLE = Qt::UserRole + 1,

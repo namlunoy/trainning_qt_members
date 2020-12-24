@@ -3,7 +3,7 @@
 
 #include <QVector>
 
-#include "member.h"
+#include "Member.h"
 
 enum ROLE {
     LEADER,
