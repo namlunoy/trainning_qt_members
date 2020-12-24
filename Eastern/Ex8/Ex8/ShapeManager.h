@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QDebug>
 #include <QQmlEngine>
+#include <QQmlComponent>
+#include <QQuickItem>
 
-
-
-class MyShapee: public QObject
+class ShapeManager: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(eType type READ type WRITE setType NOTIFY typeChanged)
@@ -15,7 +15,7 @@ class MyShapee: public QObject
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
-    MyShapee(QObject* parent = nullptr);
+    ShapeManager(QObject* parent = nullptr);
     enum eType {
         E_BOX = 0,
         E_CIRCLE,
@@ -34,7 +34,7 @@ public:
 
     void declareQML();
 
-Q_SIGNALS:
+signals:
     void typeChanged();
     void numberChanged();
     void colorChanged();

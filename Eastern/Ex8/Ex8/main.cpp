@@ -3,7 +3,7 @@
 #include <QQmlContext>
 #include <QQmlComponent>
 
-#include "myshape.h"
+#include "ShapeManager.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    MyShapee myShape;
+    ShapeManager myShape;
     myShape.declareQML();
     engine.rootContext()->setContextProperty("MyShapeCpp", &myShape);
 
@@ -21,12 +21,11 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+//    engine.load(url);
 
     QQmlComponent component(&engine, url);
-    QObject* obj = component.create();
-    myShape.setRootObj(obj);
-
-
+    QObject* root = component.create();
+    myShape.setRootObj(root);
 
     return app.exec();
 }

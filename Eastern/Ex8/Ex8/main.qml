@@ -9,9 +9,11 @@ Window {
     height: 480
     title: qsTr("Have Fun With Boxes")
 
+    property var component: Qt.createComponent("MyShape.qml")
+
     function insertToGrid(shapeType, shapeNumber, shapeColor) {
-        listModelGrid.append({"type" : shapeType, "number" : shapeNumber, "color" : shapeColor.toString()})
-        gridView.positionViewAtEnd();
+        component.createObject(sidebarGrid,
+            {shapeType: myShape.shapeType, shapeColor: myShape.shapeColor, shapeNumber: myShape.shapeNumber})
     }
 
     Item {
@@ -42,40 +44,28 @@ Window {
 
             border.color: "black"
 
-            ListModel {
-                id: listModelGrid
-            }
-
-            Component {
-                id: boxComponent
-
-                MyShape {
-                    width: gridView.cellWidth
-                    height: gridView.cellHeight
-                    shapeType: type
-                    shapeNumber: number
-                    shapeColor: color
-                }
-            }
-
-            GridView {
-                id: gridView
+            Flickable {
+                id: flickItem
 
                 width: parent.width * 19/20
                 height: parent.height * 19/20
-                clip: true
+                contentHeight: 100 * parseInt(sidebarGrid.children.length/sidebarGrid.columns +
+                    (sidebarGrid.children.length%sidebarGrid.columns == 0 ? 0 : 1))
                 anchors.centerIn: parent
+                clip: true
+                contentY: (flickItem.contentHeight > flickItem.height) ? flickItem.contentHeight - flickItem.height : 0
 
-                model: listModelGrid
-                delegate: boxComponent
-                add: Transition {
-                    NumberAnimation { properties: "x,y"; from: 100; duration: 300 }
-                }
-                remove: Transition {
-                    NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 1000 }
-                    NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: 1000 }
-                }
+                Grid {
+                    objectName: "sidebarView"
+                    id: sidebarGrid
 
+                    anchors.fill: parent
+                    spacing: 0
+                    columns: parseInt(parent.width /100)
+                    add: Transition {
+                        NumberAnimation { properties: "x,y"; from: 0; duration: 300 }
+                    }
+                }
             }
         }
 
@@ -185,7 +175,9 @@ Window {
                 buttonText: "CLEAR"
 
                 onClickButton: {
-                    listModelGrid.clear()
+                    for(var i = 0; i < sidebarGrid.children.length ; i++) {
+                        sidebarGrid.children[i].destroy();
+                    }
                 }
             }
         }

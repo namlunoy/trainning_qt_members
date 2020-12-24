@@ -39,7 +39,7 @@ public:
     QString convertRoleToString(eRole role);
     eRole convertStringToRole(QString role);
 
-Q_SIGNALS:
+signals:
     void roleChanged();
     void nameChanged();
     void ageChanged();
