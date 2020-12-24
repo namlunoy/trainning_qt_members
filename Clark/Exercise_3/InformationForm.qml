@@ -1,24 +1,29 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 
-import "Utils.js" as Utils
-
 Rectangle {
-    id: rootInfor
     y: 20
     width: 270
     height:  340
     border.color: "lightgrey"
     border.width: 1
     anchors.horizontalCenter: parent.horizontalCenter
-    property string memberName: "Default Name"
-    property int memberAge: 99
-    property int memberRole: 0
-    property int idx: 0
     property bool isAdd: false
 
+    function getRoleColor(role) {
+        switch(role) {
+        case 0: case "Team Leader":
+            return "yellow";
+        case 1: case "Developer":
+            return "blue";
+        case 2: case "BA":
+            return "red";
+        case 3: case "Tester":
+            return "green";
+        }
+    }
+
     Rectangle {
-        id: infor
         x: 30
         y: 60
         width: 200
@@ -49,7 +54,7 @@ Rectangle {
                 font.pixelSize: 12
 
                 onTextChanged: {
-                    rootInfor.memberName = this.text;
+                    myMember.name = this.text;
                 }
             }
             TextField {
@@ -63,7 +68,7 @@ Rectangle {
 
                 onTextChanged: {
                     if (this.text !== "") // Avoid negative value when text is null
-                        rootInfor.memberAge = parseInt(this.text);
+                        myMember.age = parseInt(this.text);
                 }
             }
             ComboBox {
@@ -82,7 +87,7 @@ Rectangle {
                     text: modelData
                     width: parent.width
                     background: Rectangle {
-                        color: Utils.getRoleColor(modelData)
+                        color: getRoleColor(modelData)
                     }
                 }
 
@@ -93,12 +98,12 @@ Rectangle {
                     border.color: "black"
                     border.width: 1
                     color: {
-                        Utils.getRoleColor(roleSelect.currentIndex)
+                        getRoleColor(roleSelect.currentIndex)
                     }
                 }
 
                 onCurrentIndexChanged: {
-                    rootInfor.memberRole = roleSelect.currentIndex;
+                    myMember.role = roleSelect.currentIndex;
                 }
 
                 font.pixelSize: 12
@@ -108,57 +113,52 @@ Rectangle {
         }
     }
 
-    Rectangle {
+    Loader {
+        id: buttonLoader;
         y: 240
-        height: delBtn.height
+        height: 40
         width: parent.width - 40
         anchors.horizontalCenter: parent.horizontalCenter
+    }
 
-        Button {
-            id: updateBtn
-            text: "UPDATE"
-            anchors.left: parent.left
+    Component {
+        id: info
+        Item {
+            Button {
+                text: "UPDATE"
+                anchors.left: parent.left
+                onClicked: {
+                    myListModel.edit();
+                }
+            }
 
-            onClicked: {
-                myMember.name = rootInfor.memberName;
-                myMember.role = rootInfor.memberRole;
-                myMember.age = rootInfor.memberAge;
-                myListModel.edit();
+            Button {
+                text: "DELETE"
+                anchors.right: parent.right
+                onClicked: {
+                    myListModel.remove();
+                }
             }
         }
+    }
 
+    Component {
+        id: add
         Button {
-            id: delBtn
-            text: "DELETE"
-            anchors.right: parent.right
-            onClicked: {
-                myListModel.remove();
-            }
-        }
-
-        Button {
-            id: addBtn
             text: "ADD"
             anchors.horizontalCenter: parent.horizontalCenter;
             onClicked: {
-                myMember.name = rootInfor.memberName;
-                myMember.role = rootInfor.memberRole;
-                myMember.age = rootInfor.memberAge;
                 myListModel.append();
             }
         }
+    }
 
-        Component.onCompleted: {
-            if (isAdd) {
-                addBtn.visible = true;
-                delBtn.visible = false;
-                updateBtn.visible = false;
-            }
-            else {
-                addBtn.visible = false;
-                delBtn.visible = true;
-                updateBtn.visible = true;
-            }
+    Component.onCompleted: {
+        if (isAdd) {
+            buttonLoader.sourceComponent = add;
+        }
+        else {
+            buttonLoader.sourceComponent = info;
         }
     }
 }

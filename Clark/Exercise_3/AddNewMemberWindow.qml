@@ -8,7 +8,7 @@ ApplicationWindow {
         height: parent.height
         anchors.right: parent.right
 
-        Information {
+        InformationForm {
             isAdd: true
         }
     }

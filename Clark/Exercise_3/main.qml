@@ -4,6 +4,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
+    id: mainWindow
     visible: true
     width: 640
     height: 480
@@ -15,7 +16,7 @@ ApplicationWindow {
             Action {
                 text: "Add New Members..."
                 onTriggered: {
-                    addNewWindow.show()
+                    addNewWindow.show();
                 }
             }
             MenuSeparator {}
@@ -31,7 +32,7 @@ ApplicationWindow {
             Action {
                 text: "About"
                 onTriggered: {
-                    about.show()
+                    aboutWindow.show()
                 }
             }
         }
@@ -59,7 +60,7 @@ ApplicationWindow {
                 text: "Team Members"
             }
 
-            TeamMembers {
+            TeamMembersForm {
                 id: members
             }
         }
@@ -74,23 +75,24 @@ ApplicationWindow {
                 text: "Informations"
             }
 
-            Information {
-                id: infors
+            InformationForm {
                 isAdd: false
             }
         }
 
-        AddNewMember {
+        AddNewMemberWindow {
             id: addNewWindow
             width: 300
             height: 380
+            modality: Qt.WindowModal
         }
 
         ApplicationWindow {
-            id: about
+            id: aboutWindow
             title: "Program Informations"
             width: 400
             height: 60
+            modality: Qt.WindowModal
 
             Text {
                 x: 20

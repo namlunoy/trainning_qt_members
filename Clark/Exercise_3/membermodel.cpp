@@ -4,18 +4,19 @@
 #include <QDebug>
 
 MemberModel::MemberModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : QAbstractListModel(parent),
+      m_index(0)
 {
     m_db = new MemberDatabase();
     m_db->loadDatabase(m_members);
+    m_member = new Member();
 
     if (m_members.isEmpty()) {
-        qDebug() << "init failed";
+        qDebug() << "there no members";
+    } else {
+        sortMemberByRole();
+        copyMember(m_member, m_members.at(0));
     }
-
-    sortMemberByRole();
-    m_member = new Member();
-    copyMember(m_member, m_members.at(0));
 }
 
 int MemberModel::rowCount(const QModelIndex &parent) const
@@ -23,7 +24,7 @@ int MemberModel::rowCount(const QModelIndex &parent) const
     // For list models only the root node (an invalid parent) should return the list's size. For all
     // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
     if (parent.isValid() || m_members.isEmpty()) {
-        qDebug() << "parent is invalid";
+        qDebug() << "can't initialize the view";
         return 0;
     }
     // FIXME: Implement me!
@@ -117,6 +118,7 @@ void MemberModel::copyMember(Member *dst, Member *src)
 
 void MemberModel::append()
 {
+    // Reset the model so the model can update when newly member is added
     beginResetModel();
 
     int i = m_members.size();
@@ -126,9 +128,12 @@ void MemberModel::append()
     copyMember(newMember, m_member);
     m_members.append(newMember);
     m_db->updateDatabase(m_members, m_members.size() - 1, APPEND);
-    endInsertRows();
 
+    // Sort the new added member by role
     sortMemberByRole();
+
+    endInsertRows();
+    endResetModel();
 }
 
 void MemberModel::remove()

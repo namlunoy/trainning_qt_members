@@ -1,9 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Information.qml</file>
-        <file>TeamMembers.qml</file>
-        <file>AddNewMember.qml</file>
-        <file>Utils.js</file>
+        <file>InformationForm.qml</file>
+        <file>TeamMembersForm.qml</file>
+        <file>AddNewMemberWindow.qml</file>
     </qresource>
 </RCC>
