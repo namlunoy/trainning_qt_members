@@ -8,8 +8,8 @@
 #include <QAbstractListModel>
 
 enum eRole {
-    E_BA = 0,
-    E_TESTER,
+    E_TESTER = 0,
+    E_BA,
     E_DEVELOPER,
     E_LEADER,
     E_OTHER
@@ -28,10 +28,13 @@ public:
 
     void setRole(QString role) {m_role = convertStringToRole(role);}
     void setName(QString name) {m_name = name;}
-    void setAge(int age) {m_age = age;}
+    void setAge(int age) {m_age = age;} 
+    void setId(int id) {m_id = id;}
     QString role() {return convertRoleToString(m_role);}
     QString name() {return m_name;}
     int age() {return m_age;}
+    eRole getRoleEnum() const {return m_role;}
+    int getId() {return m_id;}
 
     QString convertRoleToString(eRole role);
     eRole convertStringToRole(QString role);
@@ -45,33 +48,7 @@ private:
     eRole m_role;
     QString m_name;
     int m_age;
+    int m_id;
 };
-
-class MemberList: public QAbstractListModel
-{
-    Q_OBJECT
-
-public:
-    MemberList(QObject* parent = nullptr);
-
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QHash<int, QByteArray> roleNames() const;
-    void initList();
-
-    void initListModel();
-    void reWriteData();
-    static void registerType(char* uri);
-
-public slots:
-    Q_INVOKABLE void deleteMember(int index);
-    Q_INVOKABLE void updateMember(int index, QString name, int age, QString role);
-    Q_INVOKABLE void addMember(QString name, int age, QString role);
-
-private:
-    QList<Member*> m_memList;
-};
-
-
 
 #endif // MEMBER_H

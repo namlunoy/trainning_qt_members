@@ -69,7 +69,7 @@ Window {
                 model: listModelGrid
                 delegate: boxComponent
                 add: Transition {
-                    NumberAnimation { properties: "x,y"; from: 100; duration: 1000 }
+                    NumberAnimation { properties: "x,y"; from: 100; duration: 300 }
                 }
                 remove: Transition {
                     NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 1000 }

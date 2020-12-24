@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Member.qml</file>
-        <file>Information.qml</file>
+        <file>InformationForm.qml</file>
         <file>MyColor.js</file>
         <file>AddWindow.qml</file>
         <file>AboutWindow.qml</file>

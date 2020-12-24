@@ -8,6 +8,7 @@ ApplicationWindow {
     width: 300
     height: 300
     title: qsTr("About")
+    modality: Qt.ApplicationModal
 
     Text {
         height: parent.height *2/3

@@ -1,9 +1,8 @@
 import QtQuick 2.0
-import MemberListBackEnd 1.0
 import "MyColor.js" as MyJS
 
 Item {
-    property int currentMember: 0
+    property int currentMember: -1
     property string currentName: ""
     property string currentAge: ""
     property string currentRole: ""
@@ -17,15 +16,6 @@ Item {
         currentName = name
         currentAge = age
         currentRole = role
-    }
-
-    function deleteMember(index) {
-        memberListModel.deleteMember(index)
-    }
-
-    function updateMember(index, name, age, role) {
-        memberListModel.updateMember(index, name, age, role)
-        listView.currentIndex = index
     }
 
     signal chooseMember()
@@ -50,12 +40,6 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: titleText.bottom
         color: "transparent"
-    }
-
-    MyMemberList {
-        id: memberListModel
-
-        objectName: "memberListModel"
     }
 
     Component {
@@ -123,9 +107,9 @@ Item {
         height: parent.height *8/10
         width: parent.width *8/10
         anchors.centerIn: parent
-        model: memberListModel
+        model: MemberListModel
         delegate: listViewComponent
         clip: true
-        currentIndex: -1
+        currentIndex: currentMember
     }
 }

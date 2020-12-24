@@ -27,3 +27,33 @@ function getIndexFromRole(role) {
         return -1
     }
 }
+
+function getRoleFromIndex(index) {
+    switch(index) {
+    case 0:
+        return "BA"
+    case 1:
+        return "Tester"
+    case 2:
+        return "Developer"
+    case 3:
+        return "Team Leader"
+    default:
+        return ""
+    }
+}
+
+function getColorFromIndex(index) {
+    switch(index) {
+    case 0:
+        return "red"
+    case 1:
+        return "green"
+    case 2:
+        return "blue"
+    case 3:
+        return "yellow"
+    default:
+        return ""
+    }
+}

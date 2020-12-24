@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import "MyColor.js" as MyJS
 
 ApplicationWindow {
     id: windowApp
@@ -50,14 +51,6 @@ ApplicationWindow {
         }
     }
 
-    Connections {
-        target: newWindow
-        onAddMember: {
-            memberItem.addMember(name, age, role)
-            newWindow.close()
-        }
-    }
-
     Text {
         id: titletext
 
@@ -77,23 +70,56 @@ ApplicationWindow {
         anchors.top: titletext.bottom
         objectName: "memberObj"
         onChooseMember: {
-            inforItem.loadInfo(memberItem.currentName, memberItem.currentAge, memberItem.currentRole)
+            loader.sourceComponent = inforComponent
         }
     }
 
-    Information {
+    Item {
         id: inforItem
 
         height: parent.height *14/15
         width: parent.width /2
         anchors.top: titletext.bottom
         anchors.left: memberItem.right
-        onDeleteMember: {
-            memberItem.deleteMember(memberItem.currentMember)
+
+        Text {
+            id: titleText
+
+            height: parent.height /20
+            width: parent.width
+            font.pixelSize: text.height *2/3
+            verticalAlignment: Text.AlignVCenter
+            text: "Information"
+            x: rect.x
         }
 
-        onUpdateMember: {
-            memberItem.updateMember(memberItem.currentMember, name, age, role)
+        Rectangle {
+            id: rect
+
+            height: parent.height *12/20
+            width: parent.width * 9/10
+            border.color: "black"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: titleText.bottom
+            color: "transparent"
+
+            Loader {
+                id: loader
+
+                anchors.fill: parent
+            }
+        }
+
+        Component {
+            id: inforComponent
+
+            InformationForm {
+                memberName: memberItem.currentName
+                memberAge: memberItem.currentAge
+                roleIndex: MyJS.getIndexFromRole(memberItem.currentRole)
+                isAdd: false
+                memberIndex: memberItem.currentMember
+            }
         }
     }
 }

@@ -129,6 +129,7 @@ Item {
                     ListElement { text: "Developer"; color: "blue" }
                     ListElement { text: "Team Leader"; color: "green" }
                 }
+
                 style: ComboBoxStyle {
                     background: Rectangle {
                         width: comboBox.width
