@@ -1,4 +1,4 @@
-#include "addcomponent.h"
+#include "AddComponent.h"
 
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
@@ -13,7 +13,7 @@ AddComponent::AddComponent(QQmlApplicationEngine &engine, QObject *parent)
 {
 }
 
-void AddComponent::createComponent(QString model)
+void AddComponent::createComponent(QString model, QString color, QString text)
 {
     if (m_engine.rootObjects().isEmpty()) {
         qDebug() << "Can't load main" << endl;
@@ -28,20 +28,14 @@ void AddComponent::createComponent(QString model)
         return;
     }
 
-    QObject *shape = root->findChild<QObject *>("shape");
-    if (!shape) {
-        qDebug() << "Can't find shape" << endl;
-        return;
-    }
-
     // Create new component
     QQmlComponent* component = new QQmlComponent(&m_engine, QUrl("qrc:/" + model));
     QObject *gridList = component->create();
     QQuickItem *item = qobject_cast<QQuickItem*>(gridList);
 
     // Set properties
-    item->setProperty("color", QQmlProperty::read(shape, "shapeColor").toString());
-    item->setProperty("insideText", QQmlProperty::read(shape, "text").toString());
+    item->setProperty("color", color);
+    item->setProperty("insideText", text);
 
     // Set where newly add component located
     item->setParentItem(qobject_cast<QQuickItem*>(grid));

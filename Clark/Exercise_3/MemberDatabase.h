@@ -28,6 +28,7 @@ public:
     MemberDatabase();
     QJsonArray readDataBase();
     void writeDatabase(const QJsonArray &array);
+    void writeDatabase(const QVector<Member*> &members);
     ROLE setRole(QString role);
     QString getRole(int role);
 

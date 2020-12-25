@@ -5,6 +5,5 @@
         <file>Circle.qml</file>
         <file>Triangle.qml</file>
         <file>ShapeSelect.qml</file>
-        <file>Utils.js</file>
     </qresource>
 </RCC>

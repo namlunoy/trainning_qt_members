@@ -16,6 +16,7 @@ MemberListModel::MemberListModel(QObject *parent)
     } else {
         sortMemberByRole();
         copyMember(m_member, m_members.at(0));
+        updateIndexAfterChanged();
     }
 }
 
@@ -127,10 +128,11 @@ void MemberListModel::append()
     Member *newMember = new Member();
     copyMember(newMember, m_member);
     m_members.append(newMember);
-    m_db->updateDatabase(m_members, m_members.size() - 1, APPEND);
 
     // Sort the new added member by role
     sortMemberByRole();
+    updateIndexAfterChanged();
+    m_db->writeDatabase(m_members);
 
     endInsertRows();
     endResetModel();
@@ -143,11 +145,18 @@ void MemberListModel::remove()
         return;
     }
 
+    beginResetModel();
     beginRemoveRows(QModelIndex(), m_index, m_index);
-    m_db->updateDatabase(m_members, m_index, REMOVE);
     m_members.removeAt(m_index);
 
+    // Sort the new changed member by role
+    sortMemberByRole();
+    updateIndexAfterChanged();
+
+    m_db->writeDatabase(m_members);
+
     endRemoveRows();
+    endResetModel();
 }
 
 void MemberListModel::edit()
@@ -157,6 +166,7 @@ void MemberListModel::edit()
         return;
     }
 
+    beginResetModel();
     Member *oldMember = m_members.at(m_index);
     if (m_member->name() == oldMember->name() && m_member->role() == oldMember->role()
             && m_member->age() == oldMember->age())
@@ -166,9 +176,14 @@ void MemberListModel::edit()
     Member *newMember = new Member();
     copyMember(newMember, m_member);
     m_members.replace(m_index, newMember);
-    m_db->updateDatabase(m_members, m_index, REPLACE);
+
+    // Sort the new changed member by role
+    sortMemberByRole();
+    updateIndexAfterChanged();
+    m_db->writeDatabase(m_members);
 
     dataChanged(createIndex(m_index, 0), createIndex(m_index, 0));
+    endResetModel();
 }
 
 void MemberListModel::select(int index)
@@ -194,4 +209,29 @@ void MemberListModel::sortMemberByRole()
     {
         return a->role() < b->role();
     });
+}
+
+void MemberListModel::updateIndexAfterChanged()
+{
+    int newIndex = getIndexByMember(m_member);
+    if (newIndex != -1)
+    {
+        emit indexChanged(newIndex);
+    }
+}
+
+int MemberListModel::getIndexByMember(Member *member)
+{
+    for (int i = 0; i < m_members.size(); i++)
+    {
+        Member *mem = m_members.at(i);
+
+        if (mem->age() == member->age() &&
+                mem->name() == member->name() &&
+                mem->role() == member->role()) {
+            return i;
+        }
+    }
+
+    return -1;
 }

@@ -97,6 +97,22 @@ Rectangle {
             }
         }
     }
+
+    Connections {
+        target: myListModel
+        onIndexChanged: {
+            membersView.currentIndex = index;
+            timer.start();
+        }
+    }
+
+    Timer { // wait small amount of time for listview redraw complete
+        id: timer
+        interval: 50
+        onTriggered: {
+            membersView.positionViewAtIndex(membersView.currentIndex, ListView.Beginning)
+        }
+    }
 }
 
 

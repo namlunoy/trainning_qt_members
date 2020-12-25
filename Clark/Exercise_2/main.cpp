@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "addcomponent.h"
+#include "AddComponent.h"
 
 int main(int argc, char *argv[])
 {

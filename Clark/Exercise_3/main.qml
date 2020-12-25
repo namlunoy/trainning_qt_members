@@ -65,7 +65,6 @@ ApplicationWindow {
             }
         }
 
-
         Rectangle {
             width: 300
             height: parent.height

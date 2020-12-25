@@ -51,6 +51,25 @@ void MemberDatabase::writeDatabase(const QJsonArray &array)
     file.close();
 }
 
+void MemberDatabase::writeDatabase(const QVector<Member *> &members)
+{
+    QJsonArray array;
+
+    foreach (Member* member, members)
+    {
+        auto data = QJsonObject(
+        {
+            qMakePair(QString("name"), QJsonValue(member->name())),
+            qMakePair(QString("role"), QJsonValue(getRole(member->role()))),
+            qMakePair(QString("age"), QJsonValue(member->age()))
+        });
+
+        array.push_back(QJsonValue(data));
+    }
+
+    writeDatabase(array);
+}
+
 void MemberDatabase::loadDatabase(QVector<Member*> &members)
 {
     QJsonArray array = readDataBase();
@@ -64,7 +83,6 @@ void MemberDatabase::loadDatabase(QVector<Member*> &members)
         members.append(member);
     }
 }
-
 
 void MemberDatabase::updateDatabase(QVector<Member*> &members, int index, Database act)
 {

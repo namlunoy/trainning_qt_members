@@ -8,29 +8,26 @@ Rectangle {
     property string shapeColor: "white"
     property string text: "0"
 
-    Box { id: box; }
-    Circle { id: circle; }
-    Triangle { id: triangle; }
+    Loader {
+        id: myLoader
+    }
 
+    Component { id: box; Box { color: shapeColor; insideText: text; } }
+    Component { id: circle; Circle { color: shapeColor; insideText: text; } }
+    Component { id: triangle; Triangle{ color: shapeColor; insideText: text; } }
 
     states: [
         State {
             name: "CircleSelect"
-            PropertyChanges { target: box; visible: false; color: shapeColor; insideText: text }
-            PropertyChanges { target: circle; visible: true; color: shapeColor; insideText: text }
-            PropertyChanges { target: triangle; visible: false; color: shapeColor; insideText: text }
+            PropertyChanges { target: myLoader; sourceComponent: circle }
         },
         State {
             name: "BoxSelect"
-            PropertyChanges { target: box; visible: true; color: shapeColor; insideText: text }
-            PropertyChanges { target: circle; visible: false; color: shapeColor; insideText: text }
-            PropertyChanges { target: triangle; visible: false; color: shapeColor; insideText: text }
+            PropertyChanges { target: myLoader; sourceComponent: box }
         },
         State {
             name: "TriangleSelect"
-            PropertyChanges { target: box; visible: false; color: shapeColor; insideText: text }
-            PropertyChanges { target: circle; visible: false; color: shapeColor; insideText: text }
-            PropertyChanges { target: triangle; visible: true; color: shapeColor; insideText: text; }
+            PropertyChanges { target: myLoader; sourceComponent: triangle }
         }
     ]
 }

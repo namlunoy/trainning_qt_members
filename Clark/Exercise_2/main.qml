@@ -1,14 +1,79 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
-import QtQuick.Controls 2.12
-
-import "Utils.js" as Utils
+import QtQuick.Controls 2.1
 
 Window {
     visible: true
     width: 655
     height: 480
     title: qsTr("Have fun with boxes")
+
+    function createComponent(shapePath) {
+        var component;
+        var sprite;
+
+        component = Qt.createComponent(shapePath);
+
+        if (component.status === Component.Ready) {
+            sprite = component.createObject(grid, {color: shape.shapeColor, insideText: shape.text});
+
+            if (sprite === null) {
+                console.log("Error: creating object failed!");
+            }
+        }
+        else if (component.status === Component.Error) {
+            console.log("Error: loading component failed!");
+        }
+    }
+
+    function bottomView() {
+        if (flick.contentHeight > 400) {
+            flick.contentY = flick.contentHeight - 400;
+        }
+    }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getColor() {
+        return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+    }
+
+    function isColorBlack(color) {
+        color = color.substring(1);      // strip #
+        var rgb = parseInt(color, 16);   // convert rrggbb to decimal
+        var r = (rgb >> 16) & 0xff;  // extract red
+        var g = (rgb >>  8) & 0xff;  // extract green
+        var b = (rgb >>  0) & 0xff;  // extract blue
+
+        var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+        if (luma < 40) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function getRandomColor() {
+        var color = getColor();
+
+        while (isColorBlack(color)) {
+            color = getColor();
+        }
+
+        return color;
+    }
+
+    function generate() {
+        shape.text = getRandomInt(0, 100).toString();
+        shape.shapeColor = getRandomColor();
+        comboBox.currentIndex = getRandomInt(0, 2);
+    }
 
     Rectangle {
         x: 25
@@ -67,19 +132,6 @@ Window {
         font.pixelSize: 20
         font.bold: true
         currentIndex: 0
-
-        onCurrentIndexChanged: {
-            switch(currentIndex) {
-            case 0:
-                shape.state = "CircleSelect"; break;
-            case 1:
-                shape.state = "BoxSelect"; break;
-            case 2:
-                shape.state = "TriangleSelect"; break;
-            default:
-                shape.state = "CircleSelect"; break;
-            }
-        }
     }
 
     ShapeSelect {
@@ -88,6 +140,7 @@ Window {
 
         id: shape
         objectName: "shape"
+        state: (comboBox.currentIndex === 0) ? "CircleSelect" : ((comboBox.currentIndex === 1) ? "BoxSelect" : "TriangleSelect")
     }
 
     Button {
@@ -104,7 +157,7 @@ Window {
             running: false
 
             onTriggered: {
-                Utils.generate();
+                generate();
             }
         }
 
@@ -140,16 +193,16 @@ Window {
         onClicked: {
             switch(comboBox.currentIndex) {
             case 0:
-                addComponent.createComponent("Circle.qml"); break;
+                addComponent.createComponent("Circle.qml", shape.shapeColor, shape.text); break;
             case 1:
-                addComponent.createComponent("Box.qml"); break;
+                addComponent.createComponent("Box.qml", shape.shapeColor, shape.text); break;
             case 2:
-                addComponent.createComponent("Triangle.qml"); break;
+                addComponent.createComponent("Triangle.qml", shape.shapeColor, shape.text); break;
             default:
-                addComponent.createComponent("Circle.qml"); break;
+                addComponent.createComponent("Circle.qml", shape.shapeColor, shape.text); break;
             }
 
-            Utils.bottomView();
+            bottomView();
         }
     }
 
@@ -163,16 +216,16 @@ Window {
         onClicked: {
             switch(comboBox.currentIndex) {
             case 0:
-                Utils.createComponent("Circle.qml"); break;
+                createComponent("Circle.qml"); break;
             case 1:
-                Utils.createComponent("Box.qml"); break;
+                createComponent("Box.qml"); break;
             case 2:
-                Utils.createComponent("Triangle.qml"); break;
+                createComponent("Triangle.qml"); break;
             default:
-                Utils.createComponent("Circle.qml"); break;
+                createComponent("Circle.qml"); break;
             }
 
-            Utils.bottomView();
+            bottomView();
         }
     }
 

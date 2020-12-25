@@ -43,6 +43,7 @@ public slots:
 
 signals:
     void membersChanged(QVector<Member*> members);
+    void indexChanged(int index);
 
 private:
     QVector<Member*> m_members;
@@ -52,6 +53,8 @@ private:
 
     void copyMember(Member *dst, Member* src);
     void sortMemberByRole();
+    void updateIndexAfterChanged();
+    int getIndexByMember(Member *member);
 
 public:
     Q_INVOKABLE void append();

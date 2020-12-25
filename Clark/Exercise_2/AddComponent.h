@@ -10,7 +10,7 @@ class AddComponent : public QObject
 public:
 //    explicit AddComponent(QObject *parent = nullptr);
     explicit AddComponent(QQmlApplicationEngine &engine, QObject *parent = nullptr);
-    Q_INVOKABLE void createComponent(QString model);
+    Q_INVOKABLE void createComponent(QString model, QString color, QString text);
 
 private:
     QQmlApplicationEngine &m_engine;

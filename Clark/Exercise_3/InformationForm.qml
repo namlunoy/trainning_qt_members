@@ -9,6 +9,9 @@ Rectangle {
     border.width: 1
     anchors.horizontalCenter: parent.horizontalCenter
     property bool isAdd: false
+    property string memberName: "Default Name"
+    property int memberAge: 99
+    property int memberRole: 0
 
     function getRoleColor(role) {
         switch(role) {
@@ -54,7 +57,7 @@ Rectangle {
                 font.pixelSize: 12
 
                 onTextChanged: {
-                    myMember.name = this.text;
+                    memberName = this.text;
                 }
             }
             TextField {
@@ -68,7 +71,7 @@ Rectangle {
 
                 onTextChanged: {
                     if (this.text !== "") // Avoid negative value when text is null
-                        myMember.age = parseInt(this.text);
+                        memberAge = parseInt(this.text);
                 }
             }
             ComboBox {
@@ -103,7 +106,7 @@ Rectangle {
                 }
 
                 onCurrentIndexChanged: {
-                    myMember.role = roleSelect.currentIndex;
+                    memberRole = roleSelect.currentIndex;
                 }
 
                 font.pixelSize: 12
@@ -128,6 +131,9 @@ Rectangle {
                 text: "UPDATE"
                 anchors.left: parent.left
                 onClicked: {
+                    myMember.name = memberName;
+                    myMember.age  = memberAge;
+                    myMember.role = memberRole;
                     myListModel.edit();
                 }
             }
@@ -148,6 +154,9 @@ Rectangle {
             text: "ADD"
             anchors.horizontalCenter: parent.horizontalCenter;
             onClicked: {
+                myMember.name = memberName;
+                myMember.age  = memberAge;
+                myMember.role = memberRole;
                 myListModel.append();
             }
         }
