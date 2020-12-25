@@ -50,7 +50,7 @@ Rectangle {
             TextField {
                 width: 140
                 height: 40
-                text: myMember.name;
+                text: isAdd ? "Default name" : myMember.name;
                 anchors.leftMargin: 0
                 anchors.left: parent.left
                 placeholderText: "Enter name"
@@ -64,7 +64,7 @@ Rectangle {
                 width: 140
                 height: 40
                 y: 55;
-                text: myMember.age.toString();
+                text: isAdd ? "99" : myMember.age.toString();
                 anchors.left: parent.left
                 placeholderText: "Enter age"
                 font.pixelSize: 12
@@ -111,7 +111,7 @@ Rectangle {
 
                 font.pixelSize: 12
                 font.bold: true
-                currentIndex: myMember.role
+                currentIndex: isAdd ? 0 : myMember.role
             }
         }
     }

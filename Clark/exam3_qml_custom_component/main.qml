@@ -75,7 +75,7 @@ Window {
 
         Text {
             id: textDisplay
-            text: "Text"
+            text: "Text" + "test rebase"
             anchors.horizontalCenter: parent.horizontalCenter
             font.pixelSize: 30
         }
